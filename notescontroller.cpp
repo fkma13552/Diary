@@ -16,7 +16,7 @@ Note &NotesController::GetNote(const int &id)
     return noteDAO->GetNote(id);
 }
 
-vector<Note>::iterator NotesController::GetAllNotes()
+vector<Note> NotesController::GetAllNotes()
 {
     return noteDAO->GetAllNotes();
 }

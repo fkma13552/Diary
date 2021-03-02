@@ -8,6 +8,7 @@
 #include <QCalendarWidget>
 #include <QListWidget>
 #include "INotesController.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,8 +18,11 @@ public:
     ~MainWindow();
 private slots:
     void handleButton();
+    void refreshList();
+    void resfrshNoteTextField();
 private:
-    QLineEdit *inputField;
+    QLineEdit *inputFieldNoteText;
+    QLineEdit *inputFieldNoteName;
     QTextEdit *outputField;
     QCalendarWidget *calendar;
     QListWidget *notes;

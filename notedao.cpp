@@ -22,8 +22,8 @@ Note& NoteDAO::AddNote(const string& title, const  string& text) {
     return *note;
 }
 
-vector<Note>::iterator NoteDAO::GetAllNotes() {
-    return notes.begin();
+vector<Note> NoteDAO::GetAllNotes() {
+    return notes;
 }
 
 Note& NoteDAO::GetNote(const int& id) {
