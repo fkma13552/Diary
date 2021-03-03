@@ -12,12 +12,12 @@ public:
     NoteDAO();
     ~NoteDAO();
     Note& AddNote(const string& title, const  string& text);
-    Note& GetNote(const int& id) ;
+    Note GetNote(const int& id) ;
     vector<Note> GetAllNotes();
     void DisplayAll() const;
 
 private:
-    int nextNoteId = 666;
+    int nextNoteId = 0;
     vector<Note> notes;
 };
 

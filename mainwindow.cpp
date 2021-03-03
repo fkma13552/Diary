@@ -59,6 +59,7 @@ void MainWindow::refreshList() {
     notes->clear();
     std::vector<Note> notesList = notesController->GetAllNotes();
     QStringList listItems = QStringList ();
+   // std::vector<Note>::iterator iter = notesList.begin();
     for(auto note: notesList) {
         listItems << QString::fromStdString(note.getTitle());
     }
@@ -67,7 +68,7 @@ void MainWindow::refreshList() {
 
 void MainWindow::resfrshNoteTextField() {
     int index = notes->currentRow();
-    Note& note = notesController->GetNote(index);
+    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
 

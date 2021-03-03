@@ -11,7 +11,7 @@ Note &NotesController::AddNote(const string &title, const string &text)
     return  noteDAO->AddNote(title, text);
 }
 
-Note &NotesController::GetNote(const int &id)
+Note NotesController::GetNote(const int &id)
 {
     return noteDAO->GetNote(id);
 }
