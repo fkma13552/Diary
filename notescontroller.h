@@ -9,8 +9,8 @@ class NotesController:  public INotesController
 public:
     NotesController(NoteDAO& noteDAO);
     Note& AddNote(const string& title, const  string& text);
-    Note& GetNote(const int& id) ;
-    vector<Note>::iterator GetAllNotes();
+    Note GetNote(const int& id) ;
+    vector<Note> GetAllNotes();
 private:
     MainWindow *view;
     NoteDAO *noteDAO;
