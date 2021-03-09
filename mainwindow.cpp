@@ -16,12 +16,12 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
     int paddingX = 10;
     int paddingY = 10;
     this->notesController = &notesController;
-    notes = new QListWidget(this);
-    notes->addItem(QString("Here will be shown list of writings"));
-    notes->setGeometry(paddingX, paddingY, 380, 100);
-    //notes->resize( 400, 100 );
+    uiNotes = new QListWidget(this);
+    uiNotes->addItem(QString("Here will be shown list of writings"));
+    uiNotes->setGeometry(paddingX, paddingY, 380, 100);
+    uiNotes->setCurrentRow(1);
     refreshList();
-    connect(notes, SIGNAL(itemSelectionChanged()), this, SLOT(resfrshNoteTextField()));
+    connect(uiNotes, SIGNAL(itemSelectionChanged()), this, SLOT(resfreshNoteTextField()));
 
     outputField = new QTextEdit("Your text here", this);
     outputField->setGeometry(paddingX, paddingY + 110, 190, 100);
@@ -51,31 +51,32 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 
 }
 void MainWindow::handleButton() {
-    //outputField->setText(inputField->text());
+    string title = inputFieldNoteTitle->text().toUtf8().constData();
     notesController->AddNote(
                 inputFieldNoteTitle->text().toUtf8().constData(),
                 inputFieldNoteText->toPlainText().toUtf8().constData());
-                //inputFieldNoteText->text().toUtf8().constData());
-    //inputField->clear();
     inputFieldNoteTitle->clear();
     inputFieldNoteText->clear();
     refreshList();
 }
 
 void MainWindow::refreshList() {
-    notes->clear();
+    uiNotes->clear();
     std::vector<Note> notesList = notesController->GetAllNotes();
     QStringList listItems = QStringList ();
    // std::vector<Note>::iterator iter = notesList.begin();
-    for(auto note: notesList) {
+    for(Note note: notesList) {
+        listNotes.push_back(note);
         listItems << QString::fromStdString(note.getTitle());
     }
-    notes->addItems(listItems);
+    uiNotes->addItems(listItems);
+    uiNotes->setCurrentRow(0);
 }
 
-void MainWindow::resfrshNoteTextField() {
-    int index = notes->currentRow();
-    Note note = notesController->GetNote(index);
+void MainWindow::resfreshNoteTextField() {
+    int index = uiNotes->currentRow();
+    Note& note = listNotes.at(index);
+//    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
 
