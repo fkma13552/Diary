@@ -21,8 +21,10 @@ private slots:
     void refreshList();
     void resfrshNoteTextField();
 private:
-    QLineEdit *inputFieldNoteText;
-    QLineEdit *inputFieldNoteName;
+    QTextEdit *inputFieldNoteText;
+    QLineEdit *inputFieldNoteTitle;
+    QLineEdit *titleLb;
+    QLineEdit *textLb;
     QTextEdit *outputField;
     QCalendarWidget *calendar;
     QListWidget *notes;
