@@ -27,9 +27,6 @@ vector<Note> NoteDAO::GetAllNotes() {
 }
 
 Note NoteDAO::GetNote(const int& id) {
-    std:vector<Note> allNotes = notes;
-
-    int j = 0;
     for(auto note: notes) {
         if(note.getId() == id)
             return note;
