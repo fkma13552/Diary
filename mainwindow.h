@@ -20,6 +20,7 @@ private slots:
     void handleButton();
     void refreshList();
     void resfreshNoteTextField();
+    void saveFile();
 private:
     QTextEdit *inputFieldNoteText;
     QLineEdit *inputFieldNoteTitle;

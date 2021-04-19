@@ -6,6 +6,8 @@
 #include <qlabel.h>
 #include <QList>
 #include <QVector>
+#include <QFileDialog>
+#include <QMessageBox>
 MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 : QMainWindow(parent)
 {
@@ -49,6 +51,10 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
     okButton->setGeometry(paddingX + 300, textLine, 35, 20);
     connect(okButton, SIGNAL(released()), this, SLOT(handleButton()));
 
+    QPushButton *loadFileBtn = new QPushButton("Load file", this);
+    loadFileBtn->setGeometry(paddingX, textLine + 50, 60, 35);
+    connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
+
 }
 void MainWindow::handleButton() {
     string title = inputFieldNoteTitle->text().toUtf8().constData();
@@ -79,6 +85,37 @@ void MainWindow::resfreshNoteTextField() {
 //    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
+
+void MainWindow::saveFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+          tr("Save Address Book"), "",
+          tr("Text file (*.txt);;All Files (*)"));
+
+    if (fileName.isEmpty())
+        return;
+    else {
+        QFile file(fileName);
+        if(!file.open(QIODevice::ReadOnly)){
+                QMessageBox::information(this, tr("Unable to open file"),
+                    file.errorString());
+                return;
+        }
+        QTextStream in(&file);
+        QString qtext = in.readAll();
+        string text = qtext.toUtf8().constData();
+        string header = fileName.toUtf8().constData();
+        int start = header.rfind('/') + 1;
+        int stop = header.rfind('.');
+        header = header.erase(stop);
+        header = header.substr(start, stop);
+
+        notesController->AddNote(header, text);
+        file.close();
+        refreshList();
+    }
+}
+
 
 MainWindow::~MainWindow()
 {
