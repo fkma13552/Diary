@@ -19,13 +19,17 @@ public:
 private slots:
     void handleButton();
     void refreshList();
-    void resfrshNoteTextField();
+    void resfreshNoteTextField();
+    void saveFile();
 private:
-    QLineEdit *inputFieldNoteText;
-    QLineEdit *inputFieldNoteName;
+    QTextEdit *inputFieldNoteText;
+    QLineEdit *inputFieldNoteTitle;
+    QLineEdit *titleLb;
+    QLineEdit *textLb;
     QTextEdit *outputField;
     QCalendarWidget *calendar;
-    QListWidget *notes;
+    QListWidget *uiNotes;
     INotesController *notesController;
+    vector<Note> listNotes;
 };
 #endif // MAINWINDOW_H

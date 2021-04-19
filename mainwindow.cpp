@@ -6,71 +6,116 @@
 #include <qlabel.h>
 #include <QList>
 #include <QVector>
+#include <QFileDialog>
+#include <QMessageBox>
 MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 : QMainWindow(parent)
 {
+    setWindowTitle("Super-puper schodennyk");
+    setGeometry(100, 100, 400, 500);
+    setMinimumSize(200, 200);
 
-setWindowTitle("My diary");
-setGeometry(100, 100, 400, 500);
-setMinimumSize(200, 200);
+    int paddingX = 10;
+    int paddingY = 10;
+    this->notesController = &notesController;
+    uiNotes = new QListWidget(this);
+    uiNotes->addItem(QString("Here will be shown list of writings"));
+    uiNotes->setGeometry(paddingX, paddingY, 380, 100);
+    uiNotes->setCurrentRow(1);
+    refreshList();
+    connect(uiNotes, SIGNAL(itemSelectionChanged()), this, SLOT(resfreshNoteTextField()));
 
-this->notesController = &notesController;
-notes = new QListWidget(this);
-notes->addItem(QString("Here will be shown list of writings"));
-notes->resize( 400, 100 );
-refreshList();
-connect(notes, SIGNAL(itemSelectionChanged()), this, SLOT(resfrshNoteTextField()));
+    outputField = new QTextEdit("Your text here", this);
+    outputField->setGeometry(paddingX, paddingY + 110, 190, 100);
+    outputField->setReadOnly(true);
 
-outputField = new QTextEdit("Some text here (detailed writings).\nIt is readonly.", this);
-outputField->setGeometry(10, 110, 190, 100);
-outputField->setReadOnly(true);
+    int titleLine = paddingY + 230;
+    titleLb = new QLineEdit(this);
+    titleLb->setGeometry(paddingX, titleLine, 40, 20);
+    titleLb->setReadOnly(true);
+    titleLb->setText("Title: ");
 
-inputFieldNoteName = new QLineEdit(this);
-inputFieldNoteName->setGeometry(10, 220, 50, 20);
+    inputFieldNoteTitle = new QLineEdit(this);
+    inputFieldNoteTitle->setGeometry(paddingX + 50, titleLine, 100, 20);
 
-inputFieldNoteText = new QLineEdit(this);
-inputFieldNoteText->setGeometry(10, 250, 240, 20);
+    int textLine = paddingY + 260;
+    textLb = new QLineEdit(this);
+    textLb->setGeometry(paddingX, textLine, 40, 20);
+    textLb->setReadOnly(true);
+    textLb->setText("Note: ");
 
-QPushButton *okButton = new QPushButton("Add", this);
-okButton->setGeometry(260, 250, 35, 20);
-connect(okButton, SIGNAL(released()), this, SLOT(handleButton()));
+    inputFieldNoteText = new QTextEdit(this);
+    inputFieldNoteText->setGeometry(paddingX + 50, textLine, 240, 40);
 
-calendar = new QCalendarWidget(this);
-calendar->setGeometry(0, 300, 400, 200);
-calendar->setMinimumDate(QDate(1900, 1, 1));
-calendar->setMaximumDate(QDate(3000, 1, 1));
-calendar->setGridVisible(true);
+    QPushButton *okButton = new QPushButton("Add", this);
+    okButton->setGeometry(paddingX + 300, textLine, 35, 20);
+    connect(okButton, SIGNAL(released()), this, SLOT(handleButton()));
 
-
+    QPushButton *loadFileBtn = new QPushButton("Load file", this);
+    loadFileBtn->setGeometry(paddingX, textLine + 50, 60, 35);
+    connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
 }
 void MainWindow::handleButton() {
-    //outputField->setText(inputField->text());
+    string title = inputFieldNoteTitle->text().toUtf8().constData();
     notesController->AddNote(
-                inputFieldNoteName->text().toUtf8().constData(),
-                inputFieldNoteText->text().toUtf8().constData());
-    //inputField->clear();
-    inputFieldNoteName->clear();
+                inputFieldNoteTitle->text().toUtf8().constData(),
+                inputFieldNoteText->toPlainText().toUtf8().constData());
+    inputFieldNoteTitle->clear();
     inputFieldNoteText->clear();
     refreshList();
 }
 
 void MainWindow::refreshList() {
-    notes->clear();
+    uiNotes->clear();
     std::vector<Note> notesList = notesController->GetAllNotes();
     QStringList listItems = QStringList ();
    // std::vector<Note>::iterator iter = notesList.begin();
-    for(auto note: notesList) {
+    for(Note note: notesList) {
+        listNotes.push_back(note);
         listItems << QString::fromStdString(note.getTitle());
     }
-    notes->addItems(listItems);
+    uiNotes->addItems(listItems);
+    uiNotes->setCurrentRow(0);
 }
 
-void MainWindow::resfrshNoteTextField() {
-    int index = notes->currentRow();
-    Note note = notesController->GetNote(index);
+void MainWindow::resfreshNoteTextField() {
+    int index = uiNotes->currentRow();
+    Note& note = listNotes.at(index);
+//    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
+
+void MainWindow::saveFile()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+          tr("Save Address Book"), "",
+          tr("Text file (*.txt);;All Files (*)"));
+
+    if (fileName.isEmpty())
+        return;
+    else {
+        QFile file(fileName);
+        if(!file.open(QIODevice::ReadOnly)){
+                QMessageBox::information(this, tr("Unable to open file"),
+                    file.errorString());
+                return;
+        }
+        QTextStream in(&file);
+        QString qtext = in.readAll();
+        string text = qtext.toUtf8().constData();
+        string header = fileName.toUtf8().constData();
+        int start = header.rfind('/') + 1;
+        int stop = header.rfind('.');
+        header = header.erase(stop);
+        header = header.substr(start, stop);
+
+        notesController->AddNote(header, text);
+        file.close();
+        refreshList();
+    }
+}
+
 
 MainWindow::~MainWindow()
 {
