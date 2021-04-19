@@ -10,6 +10,8 @@ CONFIG += c++11
 
 SOURCES += \
     UserDAO.cpp \
+    UserWindow.cpp \
+    UsersController.cpp \
     main.cpp \
     mainwindow.cpp \
     note.cpp \
@@ -19,7 +21,10 @@ SOURCES += \
 
 HEADERS += \
     INotesController.h \
+    IUsersController.h \
     UserDAO.h \
+    UserWindow.h \
+    UsersController.h \
     mainwindow.h \
     note.h \
     notedao.h \
