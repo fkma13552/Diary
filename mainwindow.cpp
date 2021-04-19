@@ -68,6 +68,7 @@ void MainWindow::handleButton() {
 
 void MainWindow::refreshList() {
     uiNotes->clear();
+    listNotes.clear();
     std::vector<Note> notesList = notesController->GetAllNotes();
     QStringList listItems = QStringList ();
    // std::vector<Note>::iterator iter = notesList.begin();
@@ -82,6 +83,13 @@ void MainWindow::refreshList() {
 void MainWindow::resfreshNoteTextField() {
     int index = uiNotes->currentRow();
     Note& note = listNotes.at(index);
+//    QMessageBox *msgBox = new QMessageBox(this);
+//       msgBox->setText(QString::fromStdString(to_string(note.getId()) + " "+note.getTitle() + " "+ note.getText()));
+//       msgBox->setWindowModality(Qt::NonModal);
+//       msgBox->setInformativeText("Do you want to save your changes?");
+//       msgBox->setStandardButtons(QMessageBox::Ok);
+//       msgBox->setDefaultButton(QMessageBox::Ok);
+//       int ret = msgBox->exec();
 //    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
