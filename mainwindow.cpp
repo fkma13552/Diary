@@ -31,7 +31,7 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 
     int titleLine = paddingY + 230;
     titleLb = new QLineEdit(this);
-    titleLb->setGeometry(paddingX, titleLine, 40, 20);
+    titleLb->setGeometry(paddingX, titleLine, 47, 20);
     titleLb->setReadOnly(true);
     titleLb->setText("Title: ");
 
@@ -40,7 +40,7 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 
     int textLine = paddingY + 260;
     textLb = new QLineEdit(this);
-    textLb->setGeometry(paddingX, textLine, 40, 20);
+    textLb->setGeometry(paddingX, textLine, 47, 20);
     textLb->setReadOnly(true);
     textLb->setText("Note: ");
 
@@ -48,11 +48,11 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
     inputFieldNoteText->setGeometry(paddingX + 50, textLine, 240, 40);
 
     QPushButton *okButton = new QPushButton("Add", this);
-    okButton->setGeometry(paddingX + 300, textLine, 35, 20);
+    okButton->setGeometry(paddingX + 300, textLine, 40, 20);
     connect(okButton, SIGNAL(released()), this, SLOT(handleButton()));
 
     QPushButton *loadFileBtn = new QPushButton("Load file", this);
-    loadFileBtn->setGeometry(paddingX, textLine + 50, 60, 35);
+    loadFileBtn->setGeometry(paddingX, textLine + 50, 100, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
 }
