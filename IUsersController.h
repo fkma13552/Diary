@@ -1,7 +1,7 @@
 #ifndef IUSERSCONTROLLER_H
 #define IUSERSCONTROLLER_H
 
-#endif // IUSERSCONTROLLER_H
+
 #include "user.h"
 
 #include <iterator>
@@ -13,3 +13,4 @@ public:
     virtual User GetUser(const int& id) = 0;
     virtual vector<User> GetAllUsers() = 0;
 };
+#endif // IUSERSCONTROLLER_H

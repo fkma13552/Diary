@@ -5,7 +5,7 @@
 #ifndef USERWINDOW_H
 #define USERWINDOW_H
 
-#endif // USERWINDOW_H
+
 class UserWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,3 +17,4 @@ private slots:
 private:
     IUsersController *usersController;
 };
+#endif // USERWINDOW_H

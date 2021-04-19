@@ -10,27 +10,27 @@ string User::getLogin() const
     return login;
 }
 
-inline void User::setLogin(const string &value)
+void User::setLogin(const string &value)
 {
     login = value;
 }
 
-inline string User::getPassword() const
+string User::getPassword() const
 {
     return password;
 }
 
-inline void User::setPassword(const string &value)
+void User::setPassword(const string &value)
 {
     password = value;
 }
 
-inline int User::getId() const
+int User::getId() const
 {
     return id;
 }
 
-inline void User::setId(int value)
+void User::setId(int value)
 {
     id = value;
 }

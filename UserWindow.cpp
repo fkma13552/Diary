@@ -4,3 +4,7 @@ UserWindow::UserWindow(IUsersController& usersController, QWidget *parent)
 {
   this->usersController = &usersController;
 }
+
+UserWindow::~UserWindow()
+{
+}
