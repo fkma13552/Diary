@@ -8,6 +8,8 @@
 #include <QVector>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <loginwindow.h>
+#include <QWidget>
 MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 : QMainWindow(parent)
 {
@@ -55,6 +57,10 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
     loadFileBtn->setGeometry(paddingX, textLine + 50, 60, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
+
+    QPushButton *openLogin = new QPushButton("Llogin", this);
+    openLogin->setGeometry(paddingX, textLine + 90, 60, 35);
+    connect(openLogin, SIGNAL(released()), this, SLOT(openWidget()));
 }
 void MainWindow::handleButton() {
     string title = inputFieldNoteTitle->text().toUtf8().constData();
@@ -112,10 +118,17 @@ void MainWindow::saveFile()
 
         notesController->AddNote(header, text);
         file.close();
+
         refreshList();
     }
 }
 
+
+void MainWindow::openWidget(){
+    LoginWindow* window = new LoginWindow(this);
+    window->show();
+   // hide();
+}
 
 MainWindow::~MainWindow()
 {
