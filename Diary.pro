@@ -10,19 +10,28 @@ CONFIG += c++11
 
 SOURCES += \
     loginwindow.cpp \
+    UserDAO.cpp \
+    UserWindow.cpp \
+    UsersController.cpp \
     main.cpp \
     mainwindow.cpp \
     note.cpp \
     notedao.cpp \
-    notescontroller.cpp
+    notescontroller.cpp \
+    user.cpp
 
 HEADERS += \
     INotesController.h \
     loginwindow.h \
+    IUsersController.h \
+    UserDAO.h \
+    UserWindow.h \
+    UsersController.h \
     mainwindow.h \
     note.h \
     notedao.h \
-    notescontroller.h
+    notescontroller.h \
+    user.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

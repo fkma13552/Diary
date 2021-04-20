@@ -33,7 +33,7 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 
     int titleLine = paddingY + 230;
     titleLb = new QLineEdit(this);
-    titleLb->setGeometry(paddingX, titleLine, 40, 20);
+    titleLb->setGeometry(paddingX, titleLine, 47, 20);
     titleLb->setReadOnly(true);
     titleLb->setText("Title: ");
 
@@ -42,7 +42,7 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
 
     int textLine = paddingY + 260;
     textLb = new QLineEdit(this);
-    textLb->setGeometry(paddingX, textLine, 40, 20);
+    textLb->setGeometry(paddingX, textLine, 47, 20);
     textLb->setReadOnly(true);
     textLb->setText("Note: ");
 
@@ -50,11 +50,11 @@ MainWindow::MainWindow(INotesController& notesController, QWidget *parent)
     inputFieldNoteText->setGeometry(paddingX + 50, textLine, 240, 40);
 
     QPushButton *okButton = new QPushButton("Add", this);
-    okButton->setGeometry(paddingX + 300, textLine, 35, 20);
+    okButton->setGeometry(paddingX + 300, textLine, 40, 20);
     connect(okButton, SIGNAL(released()), this, SLOT(handleButton()));
 
     QPushButton *loadFileBtn = new QPushButton("Load file", this);
-    loadFileBtn->setGeometry(paddingX, textLine + 50, 60, 35);
+    loadFileBtn->setGeometry(paddingX, textLine + 50, 100, 35);
     connect(loadFileBtn, SIGNAL(released()), this, SLOT(saveFile()));
 
 
@@ -74,6 +74,7 @@ void MainWindow::handleButton() {
 
 void MainWindow::refreshList() {
     uiNotes->clear();
+    listNotes.clear();
     std::vector<Note> notesList = notesController->GetAllNotes();
     QStringList listItems = QStringList ();
    // std::vector<Note>::iterator iter = notesList.begin();
@@ -88,6 +89,13 @@ void MainWindow::refreshList() {
 void MainWindow::resfreshNoteTextField() {
     int index = uiNotes->currentRow();
     Note& note = listNotes.at(index);
+//    QMessageBox *msgBox = new QMessageBox(this);
+//       msgBox->setText(QString::fromStdString(to_string(note.getId()) + " "+note.getTitle() + " "+ note.getText()));
+//       msgBox->setWindowModality(Qt::NonModal);
+//       msgBox->setInformativeText("Do you want to save your changes?");
+//       msgBox->setStandardButtons(QMessageBox::Ok);
+//       msgBox->setDefaultButton(QMessageBox::Ok);
+//       int ret = msgBox->exec();
 //    Note note = notesController->GetNote(index);
     outputField->setText(QString::fromStdString(note.getText()));
 }
